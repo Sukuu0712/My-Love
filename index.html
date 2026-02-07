@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Propose Day 💍</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --bg1: #0b1020;
+      --bg2: #1b1f3b;
+      --accent: #ff4d7d;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(800px 300px at 50% 0%, rgba(255,77,125,.25), transparent 60%),
+        radial-gradient(circle at top, var(--bg2), var(--bg1));
+      color: #fff;
+      font-family: system-ui, sans-serif;
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .card {
+      position: relative;
+      max-width: 760px;
+      width: 100%;
+      padding: 28px 22px 36px;
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+      border-radius: 26px;
+      text-align: center;
+      backdrop-filter: blur(14px);
+      box-shadow:
+        0 30px 80px rgba(0,0,0,.6),
+        inset 0 0 0 1px rgba(255,255,255,.08);
+      z-index: 1;
+    }
+
+    h1 {
+      margin: 6px 0 10px;
+      font-size: clamp(28px, 4vw, 44px);
+      letter-spacing: .4px;
+    }
+
+    .type {
+      font-size: clamp(18px, 2.6vw, 22px);
+      line-height: 1.7;
+      min-height: 150px;
+      margin: 18px 0 26px;
+      white-space: pre-wrap;
+      opacity: .95;
+    }
+
+    .btn {
+      display: none;
+      margin: 0 auto;
+      padding: 16px 32px;
+      border-radius: 999px;
+      border: none;
+      font-weight: 900;
+      font-size: 16px;
+      background: linear-gradient(135deg, #ff4d7d, #ff9ab5);
+      color: #fff;
+      cursor: pointer;
+      box-shadow:
+        0 14px 34px rgba(255,77,125,.55),
+        inset 0 -2px 0 rgba(0,0,0,.15);
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .btn:hover {
+      transform: translateY(-1px) scale(1.04);
+      box-shadow: 0 18px 44px rgba(255,77,125,.7);
+    }
+
+    .final {
+      display: none;
+      margin-top: 22px;
+      font-size: clamp(24px, 3.2vw, 36px);
+      font-weight: 900;
+      animation: pop .5s ease;
+      text-shadow: 0 8px 30px rgba(255,77,125,.45);
+    }
+
+    @keyframes pop {
+      from { transform: scale(.96); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+
+    #afterYesGif {
+      display: none;
+      width: min(240px, 70vw);
+      margin: 10px auto 6px;
+      display: block;
+      border-radius: 16px;
+      filter: drop-shadow(0 8px 18px rgba(255,77,125,.35));
+    }
+  </style>
+</head>
+
+<body>
+  <main class="card">
+    <h1>Happy Propose Day 💍</h1>
+
+    <div class="type" id="type"></div>
+
+    <button class="btn" id="yesBtn">Always you 💖</button>
+
+    <div class="final" id="final">I Still Choose You, Innayat. Always. 💗</div>
+
+    <!-- GIF that shows after Yes click -->
+    <img
+      id="afterYesGif"
+      src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif"
+      alt="Cute romantic cat GIF"
+    />
+  </main>
+
+  <script>
+    const text =
+`We met in a game, of all places,
+and somehow you became my favorite part of real life, Nayuu.
+
+Even with the distance between us,
+you make me feel closer than anyone ever has.
+
+From late-night talks to laughing over random moments,
+you’ve become my comfort.
+
+So today, I just want to remind you…
+
+I STILL CHOOSE YOU. ALWAYS. 💗`;
+
+    const typeBox = document.getElementById("type");
+    const yesBtn = document.getElementById("yesBtn");
+    const final = document.getElementById("final");
+    const gif = document.getElementById("afterYesGif");
+
+    let i = 0;
+
+    function typeWriter() {
+      if (i < text.length) {
+        typeBox.textContent += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 32);
+      } else {
+        yesBtn.style.display = "inline-block";
+      }
+    }
+
+    typeWriter();
+
+    yesBtn.addEventListener("click", () => {
+      final.style.display = "block";
+      gif.style.display = "block"; // show GIF
+      confetti({
+        particleCount: 220,
+        spread: 140,
+        startVelocity: 50,
+        origin: { y: 0.6 }
+      });
+    });
+  </script>
+</body>
+</html>
