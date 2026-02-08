@@ -3,168 +3,192 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Happy Propose Day 💍</title>
-
+  <title>Will You Be My Valentine, Nayuu? 💙</title>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <style>
-    :root {
-      --bg1: #0b1020;
-      --bg2: #1b1f3b;
-      --accent: #ff4d7d;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
+    :root { --bg1:#120018; --bg2:#2a0033; }
+    body{
+      margin:0; min-height:100vh; display:grid; place-items:center; padding:20px; overflow:hidden;
       background:
         radial-gradient(800px 300px at 50% 0%, rgba(255,77,125,.25), transparent 60%),
         radial-gradient(circle at top, var(--bg2), var(--bg1));
-      color: #fff;
-      font-family: system-ui, sans-serif;
-      padding: 20px;
-      overflow: hidden;
+      color:#fff; font-family:system-ui, sans-serif;
+    }
+    .hearts{ position:fixed; inset:0; pointer-events:none; z-index:0; }
+    .heart{ position:absolute; bottom:-20px; font-size:20px; animation:float 6s linear infinite; opacity:.7; }
+    @keyframes float{ from{transform:translateY(0) scale(1); opacity:.8} to{transform:translateY(-110vh) scale(1.6); opacity:0} }
+
+    .card{
+      position:relative; max-width:760px; width:100%; padding:28px 22px 36px; text-align:center;
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+      border-radius:26px; backdrop-filter:blur(14px);
+      box-shadow:0 30px 80px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.08);
+      z-index:1;
+    }
+    h1{ margin:6px 0 10px; font-size:clamp(26px,4vw,42px); }
+    .type{ font-size:clamp(18px,2.6vw,22px); line-height:1.7; min-height:170px; margin:18px 0 14px; white-space:pre-wrap; }
+    #memoryPic{
+      display:none; width:min(320px,80vw); margin:10px auto 14px; border-radius:16px;
+      box-shadow:0 12px 30px rgba(0,0,0,.35);
+    }
+    .timeline{ margin:8px auto 12px; max-width:520px; text-align:left; opacity:.9; }
+    .timeline ul{ margin:6px 0 0 18px; line-height:1.6; }
+
+    .btn-wrap{ display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-top:8px; }
+    .btn{
+      display:none; padding:14px 26px; border-radius:999px; border:none; font-weight:900; font-size:15px;
+      color:#fff; cursor:pointer; text-decoration:none;
+      background:linear-gradient(135deg,#ff4d7d,#ff9ab5);
+      box-shadow:0 14px 34px rgba(255,77,125,.55), inset 0 -2px 0 rgba(0,0,0,.15);
+      transition:transform .08s ease, box-shadow .12s ease;
+    }
+    .btn:hover{ transform:translateY(-1px) scale(1.05); box-shadow:0 18px 44px rgba(255,77,125,.7); }
+    .btn.no{ background:linear-gradient(135deg,#444,#666); }
+
+    .final{ display:none; margin-top:16px; font-size:clamp(22px,3.2vw,34px); font-weight:900; }
+    #afterYesGif{ display:none; width:min(220px,70vw); margin:10px auto 6px; border-radius:16px; }
+
+    #themeToggle{
+      display:inline-block; position:absolute; top:12px; right:12px;
+      padding:8px 14px; border-radius:999px; border:none; cursor:pointer; font-weight:800;
+      background:rgba(255,255,255,.15); color:#fff;
     }
 
-    .card {
-      position: relative;
-      max-width: 760px;
-      width: 100%;
-      padding: 28px 22px 36px;
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
-      border-radius: 26px;
-      text-align: center;
-      backdrop-filter: blur(14px);
-      box-shadow:
-        0 30px 80px rgba(0,0,0,.6),
-        inset 0 0 0 1px rgba(255,255,255,.08);
-      z-index: 1;
-    }
+    #easterWrap{ margin-top:12px; opacity:.85; cursor:pointer; }
+    #easterMsg{ display:none; margin-top:6px; font-weight:700; }
 
-    h1 {
-      margin: 6px 0 10px;
-      font-size: clamp(28px, 4vw, 44px);
-      letter-spacing: .4px;
-    }
-
-    .type {
-      font-size: clamp(18px, 2.6vw, 22px);
-      line-height: 1.7;
-      min-height: 150px;
-      margin: 18px 0 26px;
-      white-space: pre-wrap;
-      opacity: .95;
-    }
-
-    .btn {
-      display: none;
-      margin: 0 auto;
-      padding: 16px 32px;
-      border-radius: 999px;
-      border: none;
-      font-weight: 900;
-      font-size: 16px;
-      background: linear-gradient(135deg, #ff4d7d, #ff9ab5);
-      color: #fff;
-      cursor: pointer;
-      box-shadow:
-        0 14px 34px rgba(255,77,125,.55),
-        inset 0 -2px 0 rgba(0,0,0,.15);
-      transition: transform .12s ease, box-shadow .12s ease;
-    }
-    .btn:hover {
-      transform: translateY(-1px) scale(1.04);
-      box-shadow: 0 18px 44px rgba(255,77,125,.7);
-    }
-
-    .final {
-      display: none;
-      margin-top: 22px;
-      font-size: clamp(24px, 3.2vw, 36px);
-      font-weight: 900;
-      animation: pop .5s ease;
-      text-shadow: 0 8px 30px rgba(255,77,125,.45);
-    }
-
-    @keyframes pop {
-      from { transform: scale(.96); opacity: 0; }
-      to   { transform: scale(1); opacity: 1; }
-    }
-
-    #afterYesGif {
-      display: none;
-      width: min(240px, 70vw);
-      margin: 10px auto 6px;
-      display: block;
-      border-radius: 16px;
-      filter: drop-shadow(0 8px 18px rgba(255,77,125,.35));
-    }
+    #reactions{ display:none; gap:8px; justify-content:center; margin-top:8px; }
   </style>
 </head>
 
 <body>
+  <div class="hearts" id="hearts"></div>
+
   <main class="card">
-    <h1>Happy Propose Day 💍</h1>
+    <button id="themeToggle">🌙 Night</button>
+    <h1>Innayat… aka My Nayuu 💗</h1>
 
     <div class="type" id="type"></div>
 
-    <button class="btn" id="yesBtn">Always you 💖</button>
+    <img id="memoryPic" src="memory.jpg" alt="Our memory" />
 
-    <div class="final" id="final">I Still Choose You, Innayat. Always. 💗</div>
+    <div class="timeline">
+      <strong>Our tiny timeline 💫</strong>
+      <ul>
+        <li>We met 🌱</li>
+        <li>We talked a lot 💬</li>
+        <li>This moment 💗</li>
+      </ul>
+    </div>
 
-    <!-- GIF that shows after Yes click -->
-    <img
-      id="afterYesGif"
-      src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif"
-      alt="Cute romantic cat GIF"
-    />
+    <div class="btn-wrap">
+      <button class="btn" id="yesBtn">Yes, I’m yours 💗</button>
+      <button class="btn no" id="noBtn">No 🙄</button>
+      <a class="btn" id="songBtn" href="https://open.spotify.com/search/Blue%20yung%20kai" target="_blank" rel="noopener">Play our song 💙</a>
+    </div>
+
+    <div id="reactions">
+      <button class="btn" id="awwBtn">🎀 Aww</button>
+      <button class="btn" id="cuteBtn">🥺 Cute</button>
+      <button class="btn" id="heheBtn">😌 I knew it</button>
+    </div>
+
+    <div class="final" id="final">I KNEW IT 😌💗 You’re my Valentine, Nayuu 💗</div>
+    <img id="afterYesGif" src="https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif" alt="Cute love GIF" />
+
+    <div id="easterWrap">
+      <span id="easterHeart" style="font-size:20px;">💖</span>
+      <small>Tap me 3 times</small>
+      <div id="easterMsg">I’m really glad it’s you, Nayuu 💙</div>
+    </div>
   </main>
 
   <script>
     const text =
-`We met in a game, of all places,
-and somehow you became my favorite part of real life, Nayuu.
+`Somewhere between our talks and random moments,
+you became really special to me, Innayat.
 
-Even with the distance between us,
-you make me feel closer than anyone ever has.
+I call you Nayuu because it feels like something
+that’s just mine for you.
 
-From late-night talks to laughing over random moments,
-you’ve become my comfort.
+You make my normal days brighter,
+and my bad days lighter.
 
-So today, I just want to remind you…
-
-YOU MEAN THE WORLD TO ME, NAYUU. 💗`;
+So… will you be my Valentine, Nayuu? 💗`;
 
     const typeBox = document.getElementById("type");
     const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
     const final = document.getElementById("final");
     const gif = document.getElementById("afterYesGif");
+    const hearts = document.getElementById("hearts");
+    const songBtn = document.getElementById("songBtn");
+    const reactions = document.getElementById("reactions");
+    const memoryPic = document.getElementById("memoryPic");
 
     let i = 0;
-
-    function typeWriter() {
-      if (i < text.length) {
-        typeBox.textContent += text.charAt(i);
-        i++;
-        setTimeout(typeWriter, 32);
+    function typeWriter(){
+      if(i < text.length){
+        typeBox.textContent += text.charAt(i++);
+        setTimeout(typeWriter, 28);
       } else {
         yesBtn.style.display = "inline-block";
+        noBtn.style.display = "inline-block";
+        memoryPic.style.display = "block";
       }
     }
-
     typeWriter();
 
-    yesBtn.addEventListener("click", () => {
+    function moveNoBtn(){
+      const x = Math.random()*260 - 130;
+      const y = Math.random()*160 - 80;
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+    noBtn.addEventListener("mouseenter", moveNoBtn);
+    noBtn.addEventListener("touchstart", moveNoBtn);
+    noBtn.addEventListener("click", moveNoBtn);
+
+    yesBtn.addEventListener("click", ()=>{
       final.style.display = "block";
-      gif.style.display = "block"; // show GIF
-      confetti({
-        particleCount: 220,
-        spread: 140,
-        startVelocity: 50,
-        origin: { y: 0.6 }
-      });
+      gif.style.display = "block";
+      songBtn.style.display = "inline-block";
+      reactions.style.display = "flex";
+      confetti({ particleCount: 220, spread: 140, startVelocity: 45, origin:{ y:0.6 } });
+    });
+
+    document.getElementById("awwBtn").onclick = ()=> confetti({ particleCount:60, spread:60 });
+    document.getElementById("cuteBtn").onclick = ()=> confetti({ particleCount:60, spread:90 });
+    document.getElementById("heheBtn").onclick = ()=> confetti({ particleCount:60, spread:40 });
+
+    function spawnHearts(){
+      const h = document.createElement("div");
+      h.className="heart"; h.textContent="💖";
+      h.style.left = Math.random()*100 + "vw";
+      h.style.animationDuration = (Math.random()*3 + 4) + "s";
+      hearts.appendChild(h);
+      setTimeout(()=>h.remove(), 7000);
+    }
+    setInterval(spawnHearts, 600);
+
+    let taps = 0;
+    const easterHeart = document.getElementById("easterHeart");
+    const easterMsg = document.getElementById("easterMsg");
+    easterHeart.addEventListener("click", ()=>{
+      taps++;
+      if(taps >= 3){
+        easterMsg.style.display = "block";
+        confetti({ particleCount: 80, spread: 70, startVelocity: 30, origin:{ y:0.7 } });
+      }
+    });
+
+    const toggle = document.getElementById("themeToggle");
+    let soft = false;
+    toggle.addEventListener("click", ()=>{
+      soft = !soft;
+      document.documentElement.style.setProperty("--bg1", soft ? "#2b0a1f" : "#120018");
+      document.documentElement.style.setProperty("--bg2", soft ? "#ff9ab5" : "#2a0033");
+      toggle.textContent = soft ? "☀️ Soft" : "🌙 Night";
     });
   </script>
 </body>
